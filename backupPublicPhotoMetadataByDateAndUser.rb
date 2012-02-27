@@ -80,7 +80,7 @@ while min_taken_date < MAX_DATE
     end
     page += 1
     $stderr.printf("STATUS from flickr API:%s retrieved page:%d of:%d\n", photos_on_this_page["stat"],
-      photos_on_this_page["photos"]["page"], photos_on_this_page["photos"]["pages"])
+      photos_on_this_page["photos"]["page"].to_i, photos_on_this_page["photos"]["pages"].to_i)
     photos_on_this_page["photos"]["photo"].each do|photo|
       datetaken = Time.parse(photo["datetaken"])
       datetaken = datetaken.utc
