@@ -43,12 +43,6 @@ extras_str = "description, license, date_upload, date_taken, owner_name, icon_se
              "media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o"
 
 photosColl = db.collection("photos")
-# from first date to last date do
-
-photos_to_retrieve = 250
-first_page = true
-photos_per_page = 0
-page = 1
 MIN_DATE = Time.local(ARGV[0].to_i, ARGV[1].to_i, ARGV[2].to_i, 0, 0) # may want Time.utc if you don't want local time
 MAX_DATE = Time.local(ARGV[3].to_i, ARGV[4].to_i, ARGV[5].to_i, 23, 59) # may want Time.utc if you don't want local time
 
@@ -58,6 +52,10 @@ search_url = "services/rest/"
 
 $stderr.printf("min_taken:%s max_taken:%s\n", min_taken_date, max_taken_date)
 while min_taken_date < MAX_DATE
+  photos_to_retrieve = 250
+  first_page = true
+  photos_per_page = 0
+  page = 1
   while photos_to_retrieve > 0
     url_params = {:method => "flickr.photos.search",
       :api_key => api_key,
@@ -81,7 +79,8 @@ while min_taken_date < MAX_DATE
       photos_to_retrieve -= photos_per_page
     end
     page += 1
-    PP::pp(photos_on_this_page, $stderr)
+    $stderr.printf("STATUS from flickr API:%s retrieved page:%d of:%d\n", photos_on_this_page["stat"],
+      photos_on_this_page["photos"]["page"], photos_on_this_page["photos"]["pages"])
     photos_on_this_page["photos"]["photo"].each do|photo|
       datetaken = Time.parse(photo["datetaken"])
       datetaken = datetaken.utc
