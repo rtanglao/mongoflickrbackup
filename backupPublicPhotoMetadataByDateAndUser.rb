@@ -54,10 +54,11 @@ MAX_DATE = Time.local(ARGV[3].to_i, ARGV[4].to_i, ARGV[5].to_i, 23, 59) # may wa
 
 min_taken_date  = MIN_DATE
 max_taken_date  = MIN_DATE + (60 * 60 * 24) - 1
+search_url = "services/rest/"
+
 $stderr.printf("min_taken:%s max_taken:%s\n", min_taken_date, max_taken_date)
 while min_taken_date < MAX_DATE
   while photos_to_retrieve > 0
-    search_url = "services/rest/"
     url_params = {:method => "flickr.photos.search",
       :api_key => api_key,
       :format => "json",
@@ -81,7 +82,29 @@ while min_taken_date < MAX_DATE
     end
     page += 1
     PP::pp(photos_on_this_page, $stderr)
-    # print JSON.generate(photos_on_this_page), "\n"
+    photos_on_this_page["photos"]["photo"].each do|photo|
+      datetaken = Time.parse(photo["datetaken"])
+      datetaken = datetaken.utc
+      $stderr.printf("PHOTO datetaken:%s\n", datetaken)
+      photo["datetaken"] = datetaken
+      dateupload = Time.at(photo["dateupload"].to_i)
+      $stderr.printf("PHOTO dateupload:%s\n", dateupload)
+      photo["dateupload"] = dateupload
+      lastupdate = Time.at(photo["lastupdate"].to_i)
+      $stderr.printf("PHOTO lastupdate:%s\n", lastupdate)
+      photo["lastupdate"] = lastupdate
+      photo["tags_array"] = photo["tags"].split
+      photo["id"] = photo["id"].to_i
+      id = photo["id"]
+      existingPhoto =  photosColl.find_one("id" => id)
+      if existingPhoto
+        $stderr.printf("UPDATING photo id:%d\n",id)
+        photosColl.update({"id" =>id}, photo)
+      else
+        $stderr.printf("INSERTING photo id:%d\n",id)
+        photosColl.insert(photo)
+      end
+    end
   end
   min_taken_date += (60 * 60 * 24)
   max_taken_date += (60 * 60 * 24)
