@@ -41,7 +41,7 @@ end
 extras_str = "description, license, date_upload, date_taken, owner_name, icon_server,"+
              "original_format, last_update, geo, tags, machine_tags, o_dims, views,"+
              "media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o,"+
-             "url_c, url_q, urln_n, url_c"
+             "url_c, url_q, url_n"
 
 photosColl = db.collection("photos")
 MIN_DATE = Time.local(ARGV[0].to_i, ARGV[1].to_i, ARGV[2].to_i, 0, 0) # may want Time.utc if you don't want local time
