@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'rubygems'
 require 'json'
 require 'curb'
 require 'pp'
@@ -43,6 +44,10 @@ def fetch_1_at_a_time(urls)
     filename = uri.path.rpartition('/')[2]
     $stderr.print "filename:'#{filename}'"
     $stderr.print "url:'#{url}' :"
+    if File.exist?(filename)
+      $stderr.printf("skipping EXISTING filename:%s\n", filename)
+      next
+    end
     File.open(filename, 'wb') do|f|
       easy.on_progress {|dl_total, dl_now, ul_total, ul_now| $stderr.print "="; true }
       easy.on_body {|data| f << data; data.size }   
@@ -57,9 +62,10 @@ photosColl.find({},
                   :fields => ["datetaken", "url_sq", "id"]
                 ).sort([["datetaken", Mongo::ASCENDING]]).each do |p|
   $stderr.printf("photo:%d, datetaken:%s\n", p["id"], p["datetaken"].to_s)
-  url = p["url_sq"]
-  urls.push(url)
+  urls.push(p["url_sq"]) if !p["url_sq"].nil?
 end
+
+$stderr.printf("FETCHING:%d 75x75 thumbnails\n", urls.length)
 
 fetch_1_at_a_time(urls)
 
