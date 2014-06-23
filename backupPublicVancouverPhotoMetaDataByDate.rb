@@ -81,7 +81,18 @@ while min_taken_date < MAX_DATE
     $stderr.printf("STATUS from flickr API:%s retrieved page:%d of:%d\n", photos_on_this_page["stat"],
       photos_on_this_page["photos"]["page"].to_i, photos_on_this_page["photos"]["pages"].to_i)
     photos_on_this_page["photos"]["photo"].each do|photo|
-      datetaken = Time.parse(photo["datetaken"])
+      $stderr.printf("PHOTO datetaken from flickr API:%s\n", photo["datetaken"])
+      skip = false
+      begin
+        datetaken = Time.parse(photo["datetaken"])
+      rescue ArgumentError
+        $stderr.printf("Parser EXCEPTION in date:%sSKIPPED\n",photo["datetaken"])
+        skip = true
+      end
+      if skip 
+        skip = false
+        next
+      end
       datetaken = datetaken.utc
       $stderr.printf("PHOTO datetaken:%s\n", datetaken)
       photo["datetaken"] = datetaken
