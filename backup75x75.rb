@@ -58,7 +58,7 @@ def fetch_1_at_a_time(urls)
       end
     rescue Curl::Err::ConnectionFailedError => e
       try_count += 1
-      if try_count < 3
+      if try_count < 4
         $stderr.printf("Curl:ConnectionFailedError exception, retry:%d\n",\
                        try_count)
         sleep(10)
