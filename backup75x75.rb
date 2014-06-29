@@ -48,11 +48,25 @@ def fetch_1_at_a_time(urls)
       $stderr.printf("skipping EXISTING filename:%s\n", filename)
       next
     end
-    File.open(filename, 'wb') do|f|
-      easy.on_progress {|dl_total, dl_now, ul_total, ul_now| $stderr.print "="; true }
-      easy.on_body {|data| f << data; data.size }   
-      easy.perform
-      $stderr.puts "=> '#{filename}'"
+    try_count = 0
+    begin
+      File.open(filename, 'wb') do|f|
+        easy.on_progress {|dl_total, dl_now, ul_total, ul_now| $stderr.print "="; true }
+        easy.on_body {|data| f << data; data.size }   
+        easy.perform
+        $stderr.puts "=> '#{filename}'"
+      end
+    rescue Curl::Err::ConnectionFailedError => e
+      try_count += 1
+      if try_count < 3
+        $stderr.printf("Curl:ConnectionFailedError exception, retry:%d\n",\
+                       try_count)
+        sleep(10)
+        retry
+      else
+        $stderr.printf("Curl:ConnectionFailedError exception, retrying FAILED\n")
+        raise e
+      end
     end
   end
 end
