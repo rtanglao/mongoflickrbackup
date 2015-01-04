@@ -35,17 +35,21 @@ metrics_start = Time.utc(ARGV[0], ARGV[1], ARGV[2], 0, 0)
 metrics_stop = Time.utc(ARGV[3], ARGV[4], ARGV[5], 23, 59, 59)
 metrics_stop += 1
 query = {"datetaken" => {"$gte" => metrics_start, "$lt" => metrics_stop}}
-query["woeid"] =  {"$in" => ["26332807","26332813","9807","23404908",
-"55855889","26332808","26332809","23404939","23404944","26332811","23405256",
-"23404951","23404960","55855888","23405264","55855887","26332812","23404977",
-"23404979","55855620","55998921","23405270","23405266","23404994"]
-}
+#query["cityphototaken"] = {"cityphototaken" => "vancouver.bc.canada"}
+# query["woeid"] =  {"$in" => ["26332807","26332813","9807","23404908",
+# "55855889","26332808","26332809","23404939","23404944","26332811","23405256",
+# "23404951","23404960","55855888","23405264","55855887","26332812","23404977",
+# "23404979","55855620","55998921","23405270","23405266","23404994",
+# "26332810", "91977405"]
+#}
 
 photosColl.find(query,
-                  :fields => ["woeid", "latitude", "longitude", "datetaken"]
+                  :fields => ["cityphototaken", "latitude", "longitude", "datetaken"]
                 ).sort([["datetaken", Mongo::ASCENDING]]).each do |p|
   datetaken_local = p["datetaken"].getlocal
-  printf("[%s,%s],\n",  p["latitude"].to_s, p["longitude"].to_s)
+  if p["cityphototaken"] == "vancouver.bc.canada"
+    printf("[%s,%s],\n",  p["latitude"].to_s, p["longitude"].to_s)
+  end
   # $stderr.printf("photo datetaken:%s, lat:%s, lon:%s\n", p["datetaken"].to_s, p["latitude"].to_s, p["longitude"].to_s)  
 end
 
