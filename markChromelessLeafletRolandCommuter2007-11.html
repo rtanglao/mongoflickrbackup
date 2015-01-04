@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>Roland's Vancouver 2007=cyan,08=yellow,09=red,10=green,11=blue - toner-labels Leaflet</title>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js"></script>
+<script type="text/javascript"src="vancouver-commuter-2007.js"></script>
+<script type="text/javascript" src="vancouver-commuter-2010.js"></script>
+<script type="text/javascript" src="vancouver-commuter-2011.js"></script>
+<script type="text/javascript" src="vancouver-commuter-2009.js"></script>
+	<script type="text/javascript" src="vancouver-commuter-2008.js"></script>
+<script type="text/javascript">
+function initialize() {
+  var layer = new L.StamenTileLayer("toner-background");
+  var map = new L.Map("map", {
+        scrollWheelZoom: true,
+        touchZoom: true,
+        doubleClickZoom: true,
+        zoomControl: true,
+        dragging: false,
+        center: new L.LatLng(49.2604, -123.1140),
+	zoom: 13,
+	minZoom: 10,
+	maxZoom: 18,
+	//layers: [layer],
+	 });
+  for (var i = 0; i < vancouver_commuter_2007.length; i++) {
+    L.polygon([[vancouver_commuter_2007[i][0], vancouver_commuter_2007[i][1]]], {weight: 3, color:'cyan'}).addTo(map);
+  }
+  for (var i = 0; i < vancouver_commuter_2008.length; i++) {
+    L.polygon([[vancouver_commuter_2008[i][0], vancouver_commuter_2008[i][1]]], {weight: 3, color:'magenta'}).addTo(map);
+  }
+  for (var i = 0; i < vancouver_commuter_2009.length; i++) {
+    L.polygon([[vancouver_commuter_2009[i][0], vancouver_commuter_2009[i][1]]], {weight: 3, color:'red'}).addTo(map);
+  }
+  for (var i = 0; i < vancouver_commuter_2010.length; i++) {
+    L.polygon([[vancouver_commuter_2010[i][0], vancouver_commuter_2010[i][1]]], {weight: 3, color:'green'}).addTo(map);
+  }
+  for (var i = 0; i < commuter_photos_2011.length; i++) {
+    L.polygon([[commuter_photos_2011[i][0], commuter_photos_2011[i][1]]], {weight: 3, color:'blue'}).addTo(map);
+  }
+}
+</script>
+        <style type="text/css">
+            #map {
+                width: 1920px;
+                height: 1080px;
+            }
+        </style>
+    </head>
+    <body onload="initialize()">
+        <div id="map">
+        </div>
+    </body>
+</html>
+</head>
+
