@@ -101,6 +101,7 @@ while min_taken_date < MAX_DATE
       photo["dateupload"] = dateupload
       lastupdate = Time.at(photo["lastupdate"].to_i)
       $stderr.printf("PHOTO lastupdate:%s\n", lastupdate)
+      photo["cityphototaken"] = "vancouver.bc.canada"
       photo["lastupdate"] = lastupdate
       photo["tags_array"] = photo["tags"].split
       photo["id"] = photo["id"].to_i
