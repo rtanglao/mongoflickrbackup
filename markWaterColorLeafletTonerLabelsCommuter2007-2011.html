@@ -2,9 +2,10 @@
 <html>
     <head>
 	<title>Roland's Vancouver 2007=cyan,08=yellow,09=red,10=green,11=blue - toner-labels Leaflet</title>
-<script type="text/javascript" src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-<link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css" />
-<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.1.3"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js"></script>
 <script type="text/javascript"src="vancouver-commuter-2007.js"></script>
 <script type="text/javascript" src="vancouver-commuter-2010.js"></script>
 <script type="text/javascript" src="vancouver-commuter-2011.js"></script>
@@ -12,10 +13,10 @@
 	<script type="text/javascript" src="vancouver-commuter-2008.js"></script>
 <script type="text/javascript">
 function initialize() {
-  var layer = new L.StamenTileLayer("toner-labels");
+  var layer = new L.StamenTileLayer("toner-background");
   var map = new L.Map("map", {
         scrollWheelZoom: false,
-        touchZoom: false,
+        touchZoom: true,
         doubleClickZoom: false,
         zoomControl: false,
         dragging: false,
@@ -44,8 +45,8 @@ function initialize() {
 </script>
         <style type="text/css">
             #map {
-                width: 800px;
-                height: 600px;
+                width: 1920px;
+                height: 1080px;
             }
         </style>
     </head>
