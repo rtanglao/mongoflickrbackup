@@ -36,7 +36,7 @@ photosColl = db.collection("photos")
 def  renumber(filename, file_number)
   renumbered_filename = sprintf("RENUMBERED/%6.6d", file_number) + ".jpg"
   $stderr.printf("ln -s %s %s\n", filename, renumbered_filename)
-  File.symlink(filename, renumbered_filename)
+  File.symlink("../" + filename, renumbered_filename)
 end
 
 def fetch_1_at_a_time(urls)
