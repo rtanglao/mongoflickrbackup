@@ -36,7 +36,12 @@ photosColl = db.collection("photos")
 def  renumber(filename, file_number)
   renumbered_filename = sprintf("RENUMBERED/%6.6d", file_number) + ".jpg"
   $stderr.printf("ln -s %s %s\n", filename, renumbered_filename)
-  File.symlink("../" + filename, renumbered_filename)
+  if !File.exist?(filename)
+    $stderr.printf("Renumbered file does not exist, renaming\n")
+    File.symlink("../" + filename, renumbered_filename)
+  else
+      $stderr.printf("Renumbered file DOES exist, NOT renaming\n")
+  end
 end
 
 def fetch_1_at_a_time(urls)
@@ -52,10 +57,15 @@ def fetch_1_at_a_time(urls)
     $stderr.print "filename:'#{filename}'"
     $stderr.print "url:'#{url}' :"
     if File.exist?(filename)
-      $stderr.printf("skipping EXISTING filename:%s\n", filename)
-      file_number += 1
-      renumber(filename, file_number)
-      next
+      if File.stat(filename).size != 3635
+        $stderr.printf("skipping EXISTING filename:%s\n", filename)
+        file_number += 1
+        renumber(filename, file_number)
+        next
+      else
+        $stderr.printf("REFETCHING EXISTING 3635 length filename:%s\n", filename)
+        File.unlink(filename)
+      end
     end
     try_count = 0
     begin
