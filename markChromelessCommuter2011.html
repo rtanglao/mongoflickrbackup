@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Roland's Vancouver 2011 Commuter Geotagged Cameraphone Pics - cloudmade chromeless</title>
+</head>
+<body>	
+	<div id="cm-example" style="width: 800px; height: 600px"></div>
+	
+	<script type="text/javascript" src="http://tile.cloudmade.com/wml/latest/web-maps-lite.js"></script>
+	<script type="text/javascript" src="vancouver-commuter-2011.js"></script>
+	
+	<script type="text/javascript">//<![CDATA[
+		var cloudmade = new CM.Tiles.CloudMade.Web({key: 'ccfc587e00ca40458db437d57437f5cf',styleId: 15153});
+		var map = new CM.Map('cm-example', cloudmade);
+		
+                // set centre to be Vancouver Centroid from Flickr:
+	        //http://www.flickr.com/places/info/9807
+	        map.setCenter(new CM.LatLng(49.2604, -123.1140), 13);
+		
+		for (var i = 0; i < commuter_photos_2011.length; i++) {
+	          var polygon = new CM.Polygon([
+	            new CM.LatLng(commuter_photos_2011[i][0],
+		      commuter_photos_2011[i][1])],
+	              "#000000",
+	              3, 0.5);
+	           map.addOverlay(polygon);
+		}
+	//]]></script>
+
+</body>

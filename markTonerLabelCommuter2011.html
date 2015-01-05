@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>Roland's Vancouver Geotagged 2011 Commuter Cameraphone
+Pics</title>
+	<script type="text/javascript" src="vancouver-commuter-2011.js"></script>
+      <script type="text/javascript" src="https://github.com/modestmaps/modestmaps-js/raw/master/modestmaps.js"></script>
+        <script type="text/javascript" src="../js/tile.stamen.js?v1.2.0"></script>
+        <script type="text/javascript">
+            function initialize() {
+                var layer = new MM.StamenTileLayer("toner-labels");
+                var map = new MM.Map(document.getElementById("map"), layer);
+                map.setCenterZoom(new MM.Location(49.2604, -123.1140), 13);
+                for (var i = 0; i < commuter_photos_2011.length; i++) {
+	           new MM.Location(commuter_photos_2011[i][0],
+		      commuter_photos_2011[i][1]);
+            }
+}
+        </script>
+        <style type="text/css">
+            #map {
+                width: 800px;
+                height: 600px;
+            }
+        </style>
+    </head>
+    <body onload="initialize()">
+        <div id="map">
+        </div>
+    </body>
+</html>
+</head>
+
